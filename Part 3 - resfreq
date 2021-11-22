@@ -1,3 +1,4 @@
+# IN PROGRESS
 #from Bio.PDB import PDBParser **NOT SURE IF ALLOWED TO USE OUTSIDE MODULES**
 #from collections import Counter
 #parser = PDBParser()
