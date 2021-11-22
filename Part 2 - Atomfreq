@@ -1,1 +1,15 @@
-
+d=dict()
+while 1:
+    ch = input('Enter a command (add/atomfreq/exit): ')
+    if ch.lower()=='add':
+        ele = input('Element name: ')
+        atoms = int(input('Number of atoms: '))
+        d[ele]=atoms
+    elif ch.lower()=='atomfreq':
+        for i in sorted(d.keys()):
+            print(i,':',d[i])
+    elif ch.lower()=='exit':
+        break
+    else:
+        print('Invalid commmand')
+        
