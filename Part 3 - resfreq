@@ -1,1 +1,19 @@
+#from Bio.PDB import PDBParser **NOT SURE IF ALLOWED TO USE OUTSIDE MODULES**
+#from collections import Counter
+#parser = PDBParser()
+#structure = parser.get_structure('PHA-L', '1fat.pdb')
 
+#residue = list()
+#for model in structure:
+    #for chain in model:
+        #for residue in chain:
+           #for atom in residue:
+               #residue.append()
+#print(Counter(residue))
+############################################################
+import sys
+if ProgramInput=="resfreq":
+  file = sys.argv[1]
+  with open(file) as fpin:
+      for line in fpin:
+        pass line.rstrip("\n").split(":")
