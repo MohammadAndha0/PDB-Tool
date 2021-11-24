@@ -1,20 +1,34 @@
-# IN PROGRESS
-#from Bio.PDB import PDBParser **NOT SURE IF ALLOWED TO USE OUTSIDE MODULES**
-#from collections import Counter
-#parser = PDBParser()
-#structure = parser.get_structure('PHA-L', '1fat.pdb')
-
-#residue = list()
-#for model in structure:
-    #for chain in model:
-        #for residue in chain:
-           #for atom in residue:
-               #residue.append()
-#print(Counter(residue))
-############################################################
 import sys
+
+ProgramInput=input("Enter a command: ")
 if ProgramInput=="resfreq":
-  file = sys.argv[1]
-  with open(file) as fpin:
-      for line in fpin:
-        pass line.rstrip("\n").split(":")
+    try:
+        # opening the PDB file
+        file=open(sys.argv[1],"r")
+
+        # declaring resNames as empty dictionary
+        resNames=dict()
+
+        # reading file line by line
+        for line in file:
+            # removing spaces between each line with strip
+            # then splitting line by space
+            line=line.strip().split()
+            # Only proceed if first word of line is ATOM
+            if line[0]=="ATOM":
+                try:
+                    # line[3] == resName
+                    # here line[3] is key of resNames
+                    # when key not found then it generate error--> except block run of this try
+                    # here we counting occurance of line[3] or resName
+                    resNames[line[3]]+=1
+                except:
+                    # assigning value 1 to key first time
+                    resNames[line[3]]=1
+        # closing file
+        file.close()
+        # displaying final result
+        for i in resNames:
+            print(i," : ",resNames[i])
+    except Exception as e:
+        print(e)
