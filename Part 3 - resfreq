@@ -28,7 +28,7 @@ if ProgramInput=="resfreq":
         # closing file
         file.close()
         # displaying final result
-        for i in resNames:
+        for i in (sorted(resNames)):
             print(i," : ",resNames[i])
     except Exception as e:
         print(e)
