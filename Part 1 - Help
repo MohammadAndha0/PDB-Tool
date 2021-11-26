@@ -1,33 +1,34 @@
-      ProgramInput=input("Enter a command: ")
+      Input=input("Enter a command: ")
+      ProgramInput = Input.lower()
       if ProgramInput=="help":
             HelpMenu = True
             while HelpMenu:
                   print("""
-                        1.help
-                        2.atomfreq
-                        3.resfreq
-                        4.reslength
-                        5.quit
-                        Type Exit to exit the help menu
-                        """)
-                  UserInput=input("Type in a command to learn its function: ") 
-                  if UserInput=="help": 
+                  1.help
+                  2.atomfreq
+                  3.resfreq
+                  4.reslength
+                  5.quit
+                  Type Exit to exit the help menu
+                  """)
+                  HelpInput=input("Type in a command or it's corresponding number to learn its function: ")
+                  UserInput=HelpInput.lower()
+                  if UserInput=="help" or UserInput=="1": 
                         print("The help function provides a menu that lists the fuctions of the program") 
-                  elif UserInput=="atomfreq":
+                  elif UserInput=="atomfreq" or UserInput=="2":
                         print("Displays each distinct atom that is present in the file")
                         print("Output: element: <n>")
-                  elif UserInput=="resfreq":
+                  elif UserInput=="resfreq" or UserInput=="3":
                         print("Displays each distinct residue represented by the atoms of the file")
                         print("Output: residue: <n>")
-                  elif UserInput=="reslength":
-                        print("""The reslength function allows you to calculate the distance between every
-                              pair of atoms in the specified residue and displays the maximum distance of the distances""")
+                  elif UserInput=="reslength" or UserInput=="4":
+                        print("The reslength function allows you to calculate the distance between every pair of atoms in the specified residue and displays the maximum distance of the   "
+                              "distances")
                         print("usage: reslength <res_name> <chain_id> <res_seq_num>")
                         print("<res_name> with sequence number <res_seq_num> in chain <chain_id> has length <distance> angstroms")
-                  elif UserInput=="quit":
+                  elif UserInput=="quit" or UserInput=="5":
                         print("The quit function allows you to quit the program if you type quit as a command")
-                  elif UserInput=="Exit":
+                  elif UserInput=="exit":
                         break
-                        #HelpMenu = False
                   else:
                         print("Invalid Input; Please enter a valid response from the menu")
