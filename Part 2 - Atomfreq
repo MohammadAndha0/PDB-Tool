@@ -1,3 +1,10 @@
+
+
+ProgramInput=input("Enter a command: ")
+if ProgramInput=="resfreq":
+    try:
+        # opening the PDB file
+
 d=dict()
 while 1:
     ch = input('Enter a command (add/atomfreq/exit): ')
