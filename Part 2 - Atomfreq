@@ -1,7 +1,7 @@
-
+import sys
 
 ProgramInput=input("Enter a command: ")
-if ProgramInput=="resfreq":
+if ProgramInput=="atomfreq":
     try:
         # opening the PDB file
 
