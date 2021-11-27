@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+  
+
+import sys
+
+file = open(sys.argv[1], "r")
+
+line = file.readlines()
+if line == ("^[ATOM*]$"):
+    substring = "ATOM"
+    frequency = string.count(substring)
+                    
+    for x in line:
+        serial_number = line[7:12]
+
+
+    print("Welcome to the pdb program.")
+    print("To begin, try typing 'help' for the list of valid commands.", frequency, "atoms recorded.")
