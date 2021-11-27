@@ -38,3 +38,33 @@ while 1:
         break
     else:
         print('Invalid commmand')
+        
+        
+        
+        
+# declaring resNames as empty dictionary
+        resNames=dict()
+
+        # reading file line by line
+        for line in file:
+            # removing spaces between each line with strip
+            # then splitting line by space
+            line=line.strip().split()
+            # Only proceed if first word of line is ATOM
+            if line[0]=="ATOM":
+                try:
+                    # line[3] == resName
+                    # here line[3] is key of resNames
+                    # when key not found then it generate error--> except block run of this try
+                    # here we counting occurance of line[3] or resName
+                    resNames[line[3]]+=1
+                except:
+                    # assigning value 1 to key first time
+                    resNames[line[3]]=1
+        # closing file
+        file.close()
+        # displaying final result
+        for i in (sorted(resNames)):
+            print(i," : ",resNames[i])
+    except Exception as e:
+        print(e)
