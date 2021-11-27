@@ -1,5 +1,15 @@
 
 
+
+
+
+
+
+
+
+
+
+
 HelpInput=input("Type in a command or it's corresponding number to learn its function: ")
                   UserInput=HelpInput.lower()
                   if UserInput=="help" or UserInput=="1": 
