@@ -1,80 +1,51 @@
+#!/usr/bin/env python3
+  
+import sys
+
+
+#atom_info = [serial_number, residue, chain_ID, res_sequence_num, x_coordinate, y_coordinate, z_coordinate, element_name]
+
+def atom_info(count):
+    file = open(sys.argv[1], "r")
+    lines = file.readlines()
+    atom_records = []
+    for line in lines:
+        if line.startswith('ATOM'):
+            count += 1
+            atom_records.append(line)
+            print(atom_records)
+           #print(line)
+    return count
+
+count = 0
+frequency = atom_info(count)
+print("Welcome to the pdb program. \nTo begin, try typing 'help' for the list of valid commands.")
+print(frequency, "atoms recorded.")
+
+x = input("Enter a command: ")
 
 
 
 
 
+#def help():
 
 
 
 
 
+#def atomfreq():
 
 
-HelpInput=input("Type in a command or it's corresponding number to learn its function: ")
-                  UserInput=HelpInput.lower()
-                  if UserInput=="help" or UserInput=="1": 
-                        print("The help function provides a menu that lists the fuctions of the program") 
-                  elif UserInput=="atomfreq" or UserInput=="2":
-                        print("Displays each distinct atom that is present in the file")
-                        print("Output: element: <n>")
-                  elif UserInput=="resfreq" or UserInput=="3":
-                        print("Displays each distinct residue represented by the atoms of the file")
-                        print("Output: residue: <n>")
-                  elif UserInput=="reslength" or UserInput=="4":
-                        print("The reslength function allows you to calculate the distance between every pair of atoms in the specified residue and displays the maximum distance of the   "
-                              "distances")
-                        print("usage: reslength <res_name> <chain_id> <res_seq_num>")
-                        print("<res_name> with sequence number <res_seq_num> in chain <chain_id> has length <distance> angstroms")
-                  elif UserInput=="quit" or UserInput=="5":
-                        print("The quit function allows you to quit the program if you type quit as a command")
-                  elif UserInput=="exit":
-                        break
-                  else:
-                        print("Invalid Input; Please enter a valid response from the menu")
-                        
 
 
-d=dict()
-while 1:
-    ch = input('Enter a command (add/atomfreq/exit): ')
-    if ch.lower()=='add':
-        ele = input('Element name: ')
-        atoms = int(input('Number of atoms: '))
-        d[ele]=atoms
-    elif ch.lower()=='atomfreq':
-        for i in sorted(d.keys()):
-            print(i,':',d[i])
-    elif ch.lower()=='exit':
-        break
-    else:
-        print('Invalid commmand')
-        
-        
-        
-        
-# declaring resNames as empty dictionary
-        resNames=dict()
 
-        # reading file line by line
-        for line in file:
-            # removing spaces between each line with strip
-            # then splitting line by space
-            line=line.strip().split()
-            # Only proceed if first word of line is ATOM
-            if line[0]=="ATOM":
-                try:
-                    # line[3] == resName
-                    # here line[3] is key of resNames
-                    # when key not found then it generate error--> except block run of this try
-                    # here we counting occurance of line[3] or resName
-                    resNames[line[3]]+=1
-                except:
-                    # assigning value 1 to key first time
-                    resNames[line[3]]=1
-        # closing file
-        file.close()
-        # displaying final result
-        for i in (sorted(resNames)):
-            print(i," : ",resNames[i])
-    except Exception as e:
-        print(e)
+#def resfreq():
+
+
+
+
+
+#def reslength():
+
+
