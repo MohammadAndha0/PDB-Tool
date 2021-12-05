@@ -1,32 +1,42 @@
 #!/usr/bin/env python3
-  
+
 import sys
 
-
-#atom_info = [serial_number, residue, chain_ID, res_sequence_num, x_coordinate, y_coordinate, z_coordinate, element_name]
+atom_serial_number = []
+residue = []
+chain_ID = []
+res_seq_num = []
+x_coordinate = []
+y_coordinate = []
+z_coordinate = []
+element_name = []
+count = 0
 
 def atom_info(count):
     file = open(sys.argv[1], "r")
-    lines = file.readlines()
-    atom_records = []
+    contents = file.read()
+    lines = contents.splitlines()
     for line in lines:
         if line.startswith('ATOM'):
             count += 1
-            atom_records.append(line)
-            print(atom_records)
-           #print(line)
+            #print(line)   
+            residue.append(line[18:20])
+            atom_serial_number.append(line[7:11])
+            chain_ID.append(line[21])
+            res_seq_num.append(line[23:26])
+            x_coordinate.append(line[31:38])
+            y_coordinate.append(line[39:46])
+            z_coordinate.append(line[47:54])
+            element_name.append(line[77:78])
+    #print(residue)
+    #print(atom_serial_number)
+    #print(chain_ID)
+    #print(res_seq_num)
+    #print(x_coordinate)
+    #print(y_coordinate)
+    #print(z_coordinate)
+    #print(element_name)
     return count
-
-count = 0
-frequency = atom_info(count)
-print("Welcome to the pdb program. \nTo begin, try typing 'help' for the list of valid commands.")
-print(frequency, "atoms recorded.")
-
-x = input("Enter a command: ")
-
-
-
-
 
 #def help():
 
@@ -34,18 +44,74 @@ x = input("Enter a command: ")
 
 
 
-#def atomfreq():
+#def atomFreq():
 
 
 
 
 
-#def resfreq():
+
+def resFreq():
+
+    resFreq = dict()
+
+    for res in residue:
+        try:
+            resFreq[res] += 1
+        except:
+            resFreq[res] = 1
+
+    for res in (sorted(resFreq)):
+        print(res, ':',resFreq[res])
+
+#def resLength(residue, chain_ID, res_se_num):
+
+    #resLength = dict()
+
+    #for res 
 
 
 
 
+frequency = atom_info(count)
+print("Welcome to the pdb program. \nTo begin, try typing 'help' for the list of valid commands.")
+print(frequency, "atoms recorded.")
 
-#def reslength():
+x = input("Enter a command: ")
 
+#if x == "help":
+    #help()
+#elif x == "atomFreq":
+    #atomFreq()
 
+if x == "resFreq":
+    resFreq()
+elif len(x.split()) == 4:
+    y = x.split()
+    print(y)
+    print(y[0])
+    print(y[1])
+    print(y[2])
+    print(y[3])
+    v = (y[0])
+    if v is "resLength":
+        if y[1].upper() in residue:
+            if y[2].upper() in chain_ID:
+                if y[3] in res_seq_num:
+                    print("Works!")
+                else:
+                    print("Enter the correct command with its required arguments")
+            else:
+                print("Enter the correct command with its required arguments")
+        else:
+            print("Enter the correct command with its required arguments")
+    else:
+        print("Enter the correct command with its required arguments")
+
+    #return(residue, chain_ID, res_seq_num)
+    #if res.upper() in residue:
+        #print(res)
+    #else:
+        #print("Enter a valid residue name")
+else:
+    print("Invalid Command")
