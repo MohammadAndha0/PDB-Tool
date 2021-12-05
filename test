@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+
+import sys
+
+
+residue = []
+def atom_info(count):
+    file = open(sys.argv[1], "r")
+    contents = file.read()
+    lines = contents.splitlines()
+    atom_records = []
+    for line in lines:
+        if line.startswith('ATOM'):
+            count += 1
+           #atom_records.append(line)
+
+            residue.append(line[16:20])
+            print(line)
+    #print(atom_records)
+    return count
+count = 0
+frequency = atom_info(count)
+print("Welcome to the pdb program. \nTo begin, try typing 'help' for the list of valid commands.")
+print(frequency, "atoms recorded.")
+
+x = input("Enter a command: ")
+
+
+
+#def help():
+
+
+
+
+
+#def atomfreq():
+
+
+
+
+
+def resFreq():
+
+    resFreq = dict()
+
+    for res in residue:
+        try:
+            resFreq[res] += 1
+        except:
+            resFreq[res] = 1
+
+    for res in (sorted(resFreq)):
+        print(res, ':',resFreq[res])
+
+#def reslength():
