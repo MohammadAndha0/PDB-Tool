@@ -53,3 +53,10 @@ def resFreq():
         print(res, ':',resFreq[res])
 
 #def reslength():
+
+if x == "resFreq":
+    resFreq()
+elif x == "resLength":
+    resLength()
+else:
+    print("Invalid Command")
