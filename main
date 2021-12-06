@@ -10,17 +10,36 @@ x_coordinate = []
 y_coordinate = []
 z_coordinate = []
 element_name = []
+atom_records = []
 count = 0
 
-def atom_info(count):
+
+
+try:
     file = open(sys.argv[1], "r")
+
+except PermissionError:
+    print("No access to file")
+    print("Usage: <pdbTool.py> <valid pdb file name>")
+
+except FileNotFoundError:
+    print("File does not exist")
+    print("Usage: <pdbTool.py> <valid pdb file name>")
+
+except IndexError:
+    print("A valid file isn't entered")
+    print("Usage: <pdbTool.py> <valid pdb file name>")
+
+
+def atom_info(count):
     contents = file.read()
     lines = contents.splitlines()
     for line in lines:
         if line.startswith('ATOM'):
             count += 1
-            #print(line)   
-            residue.append(line[18:20])
+            #print(line)
+            atom_records.append(line)
+            residue.append(line[17:20])
             atom_serial_number.append(line[7:11])
             chain_ID.append(line[21])
             res_seq_num.append(line[23:26])
@@ -33,22 +52,61 @@ def atom_info(count):
     #print(chain_ID)
     #print(res_seq_num)
     #print(x_coordinate)
-    #print(y_coordinate)
+#print(y_coordinate)
     #print(z_coordinate)
     #print(element_name)
+    #print(atom_records)
     return count
 
-#def help():
+
+def help():
+
+    HelpMenu = True
+    while HelpMenu:
+        print("""
+        1.help
+        2.Program Details
+        3.atomFreq
+        4.resFreq
+        5.resLength
+        6.quit
+        Type Exit to exit the help menu
+        """)
+        HelpInput=input("Type in a command or it's corresponding number to learn its function: ")
+        UserInput=HelpInput.lower()
+
+        if UserInput=="help" or UserInput=="1":
+            print("The help function provides a menu that lists the fuctions of the program")
+        elif UserInput=="Program Details" or UserInput=='2':
+            print("The program is designed to give an organized data collection or record extracted from a PDB file with information about the atoms such as the atom frequency, residue frequency, and the maximum distance of the distances")
+        elif UserInput=="atomFreq" or UserInput=="3":
+            print("Displays each distinct atom that is present in the file and the number of times it occurs in the file")
+            print("Output: element: <n>")
+        elif UserInput=="resFreq" or UserInput=="4":
+            print("Displays each distinct residue represented by the atoms of the file")
+            print("Output: residue: <n>")
+        elif UserInput=="resLength" or UserInput=="5":
+            print("The reslength function allows you to calculate the distance between every pair of atoms in the specified residue and displays the maximum distance of the distances")
+            print("usage: reslength <res_name> <chain_id> <res_seq_num>")
+            print("<res_name> with sequence number <res_seq_num> in chain <chain_id> has length <distance> angstroms")
+        elif UserInput=="quit" or UserInput=="6":
+            print("The quit function allows you to quit the program if you type quit as a command")
+        elif UserInput=="exit":
+            break
+        else:
+            print("Invalid Input; Please enter a valid response from the menu")
 
 
+def atomFreq():
 
+    atomFreq = dict()
 
+    for element in element_name:
+        try:
+            atomFreq[element] += 1
 
-#def atomFreq():
-
-
-
-
+    for element in (sorted(atomFreq)):
+        print(element, ':', atomFreq[element])
 
 
 def resFreq():
@@ -64,13 +122,15 @@ def resFreq():
     for res in (sorted(resFreq)):
         print(res, ':',resFreq[res])
 
-#def resLength(residue, chain_ID, res_se_num):
+def resLength(residue, chain_ID, res_seq_num):
 
     #resLength = dict()
 
     #for res 
-
-
+    #print("YAY")
+    print(residue)
+    print(chain_ID)
+    print(res_seq_num)
 
 
 frequency = atom_info(count)
@@ -79,35 +139,50 @@ print(frequency, "atoms recorded.")
 
 x = input("Enter a command: ")
 
-#if x == "help":
-    #help()
-#elif x == "atomFreq":
-    #atomFreq()
+if x == "help":
+    help()
+elif x == "atomFreq":
+    atomFreq()
 
-if x == "resFreq":
+elif x == "resFreq":
     resFreq()
 elif len(x.split()) == 4:
     y = x.split()
-    print(y)
-    print(y[0])
-    print(y[1])
-    print(y[2])
-    print(y[3])
-    v = (y[0])
-    if v is "resLength":
-        if y[1].upper() in residue:
-            if y[2].upper() in chain_ID:
-                if y[3] in res_seq_num:
-                    print("Works!")
-                else:
-                    print("Enter the correct command with its required arguments")
+    #print(y)
+    #print(y[0])
+    #print(y[1])
+    #print(y[2])
+    #print(y[3])
+    #print(y[1].isupper())
+    u = ['resLength']
+    if y[0] in u and y[2] in chain_ID:
+        if y[1].isupper() and y[2].isupper() is True:
+              if y[1] in residue:
+                    if y[3] in res_seq_num and int(y[3]):
+                        for line in atom_records:
+                            if line[17:20] == y[1] and line[21] == y[2] and line[23:26] == y[3]:
+                                #print("workssss")
+                                resLength(y[1], y[2], y[3])
+
+
+                            elif line[17:20] == y[1] or line[21] == y[2] or line[23:26] == y[3] is False:
+                                print("No residue present")
+
+
+                    else:
+                        #print("Enter the correct command with its required arguments")
+                        print("annoying")
+                #else:
+                    #print("Enter the correct command with its required argument")
             else:
-                print("Enter the correct command with its required arguments")
+                print("No residue present")
         else:
             print("Enter the correct command with its required arguments")
+            print("Usage: reslength <res_name> <chain_id> <res_seq_num>")
+            print("For details about the reslength command, use the 'help' command.")
     else:
-        print("Enter the correct command with its required arguments")
-
+        #print("Enter the correct command with its required arguments")
+        print("Doesn't work")
     #return(residue, chain_ID, res_seq_num)
     #if res.upper() in residue:
         #print(res)
@@ -115,3 +190,29 @@ elif len(x.split()) == 4:
         #print("Enter a valid residue name")
 else:
     print("Invalid Command")
+
+
+
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
