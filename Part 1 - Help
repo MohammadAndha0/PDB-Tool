@@ -25,7 +25,10 @@
                         print("The reslength function allows you to calculate the distance between every pair of atoms in the specified residue and displays the maximum distance of the   "
                               "distances")
                         print("usage: reslength <res_name> <chain_id> <res_seq_num>")
-                        print("<res_name> with sequence number <res_seq_num> in chain <chain_id> has length <distance> angstroms")
+                        print("""<res_name> is a three-letter residue name in uppercase
+                        <chain_id> is a one-letter chain id in uppercase
+                        <res_seq_num> is an integer that uniquely	identifies the position of the residue named res_name in the given chain""")
+                        print("Output: <res_name> with sequence number <res_seq_num> in chain <chain_id> has length <distance> angstroms")
                   elif UserInput=="quit" or UserInput=="5":
                         print("The quit function allows you to quit the program if you type quit as a command")
                   elif UserInput=="exit":
