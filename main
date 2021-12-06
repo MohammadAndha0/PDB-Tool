@@ -104,7 +104,9 @@ def atomFreq():
     for element in element_name:
         try:
             atomFreq[element] += 1
-
+        except:
+            atomFreq[element] = 1
+            
     for element in (sorted(atomFreq)):
         print(element, ':', atomFreq[element])
 
