@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+import math
 
 atom_serial_number = []
 residue = []
@@ -15,59 +16,26 @@ count = 0
 
 def atom_info(count):
 
-    try:
-        with open(sys.argv[1], "r") as file:
-            contents = file.read()
-            lines = contents.splitlines()
-            for line in lines:
-            #lines = contents.splitlines()
-                if line.startswith('ATOM'):
-                    count += 1
-                    #print(line)
-                    atom_records.append(line)
-                    residue.append(line[17:20])
-                    for res in residue:
-                        if len(res.strip()) < 3:
-                            residue.remove(res)
-                    atom_serial_number.append(line[7:11])
-                    chain_ID.append(line[21])
-                    res_seq_num.append(line[23:26])
-                    x_coordinate.append(line[31:38])
-                    y_coordinate.append(line[39:46])
-                    z_coordinate.append(line[47:54])
-                    element_name.append(line[77:78])
-            return count
+    with open(sys.argv[1], "r") as file:
+        contents = file.read()
+        lines = contents.splitlines()
+        for line in lines:
+            if line.startswith('ATOM'):
+                count += 1
+                atom_records.append(line)
+                residue.append(line[17:20])
+                for res in residue:
+                    if len(res.strip()) < 3:
+                        residue.remove(res)
+                atom_serial_number.append(line[7:11])
+                chain_ID.append(line[21])
+                res_seq_num.append(line[23:26])
+                x_coordinate.append(line[31:38])
+                y_coordinate.append(line[39:46])
+                z_coordinate.append(line[47:54])
+                element_name.append(line[77:78])
 
-            #print(residue)
-    #print(atom_serial_number)
-    #print(chain_ID)
-    #print(res_seq_num)
-    #print(x_coordinate)
-    #print(y_coordinate)
-    #print(z_coordinate)
-    #print(element_name)
-    #print(atom_records)   
-
-
-    except PermissionError:
-    #   print("No access to file")
-    #   print("Usage: <pdbTool.py> <valid pdb file name>")
-
- #except FileNotFoundError:
-    #   print("File does not exist")
-    #  print("Usage: <pdbTool.py> <valid pdb file name>")
-
-    except IndexError:
-        print("A valid file isn't entered")
-        print("Usage: <pdbTool.py> <valid pdb file name>")
         return count
-
-    except Exception as error:
-        print("Usage: <pdbTool.py> <valid pdb file name>")
-        print("For any other error, follow the proper usage format")
-        return count
-
-    return count
 
 def help():
 
@@ -84,27 +52,31 @@ def help():
         """)
         HelpInput=input("Type in a command or it's corresponding number to learn its function: ")
         UserInput=HelpInput.lower()
-
+        
         if UserInput=="help" or UserInput=="1":
-            print("The help function provides a menu that lists the fuctions of the program")
+            print("The help function provides a menu that lists the fuctions of the program.")
         elif UserInput=="Program Details" or UserInput=='2':
-            print("The program is designed to give an organized data collection or record extracted from a PDB file with information about the atoms such as the atom frequency, residue frequency, and the maximum distance of the distances")
+            print("The program is designed to give an organized data collection or record extracted from a PDB file with information about the atoms such as the atom frequency, residue frequency, and the maximum distance of the distances.")
         elif UserInput=="atomFreq" or UserInput=="3":
-            print("Displays each distinct atom that is present in the file and the number of times it occurs in the file")
+            print("Displays each distinct atom that is stored and the number of occurrences of that atom in the file.")
             print("Output: element: <n>")
+            print("element is the element name and <n> is the number of atoms of that element, sorted alphabetically.")
         elif UserInput=="resFreq" or UserInput=="4":
-            print("Displays each distinct residue represented by the atoms of the file")
+            print("Displays each distinct residue that is stored and the number of occurrences of that residue in the file.")
             print("Output: residue: <n>")
+            print("residue is the three-letter uppercase residue name and <n> is the number of occurrences of that residue in the file, sorted alphabetically.")
         elif UserInput=="resLength" or UserInput=="5":
-            print("The reslength function allows you to calculate the distance between every pair of atoms in the specified residue and displays the maximum distance of the distances")
+            print("The reslength function allows you to calculate the distance between every pair of atoms in the specified residue and displays the maximum distance of the distances.")
             print("usage: reslength <res_name> <chain_id> <res_seq_num>")
-            print("<res_name> with sequence number <res_seq_num> in chain <chain_id> has length <distance> angstroms")
-   elif UserInput=="quit" or UserInput=="6":
-            print("The quit function allows you to quit the program if you type quit as a command")
+            print("Ouput: <res_name> with sequence number <res_seq_num> in chain <chain_id> has length <distance> angstroms.")
+            print("<res_name> is a three-letter residue name in uppercase, <chain_id> is a one-letter chain id in uppercase, and <res_seq_num> is an integer that uniquely identifies the position of the residue named res_name in the given chain.")
+
+        elif UserInput=="quit" or UserInput=="6":
+            print("The quit function allows you to quit the program if you type quit as a command.")
         elif UserInput=="exit":
             break
         else:
-            print("Invalid Input; Please enter a valid response from the menu")
+            print("Invalid Input; Please enter a valid response from the menu.")
 
 
 def atomFreq():
@@ -137,124 +109,174 @@ def resFreq():
 
 def resLength(residue, chain_ID, res_seq_num):
 
-    #resLength = dict()
+    x_coord = []
+    y_coord = []
+    z_coord = []
+    x_values = []
+    y_values = []
+    z_values = []
+    coordinate_dist = []
+    #y_distance = []
+    #z_distance = []
 
-    #for res 
-    #print("YAY")
-    print(residue)
-    print(chain_ID)
-    print(res_seq_num)
+    try:
+        for line in atom_records:
+            if line[17:20] == residue and line[21] == chain_ID and line[23:26] == res_seq_num:
+                x_coord.append(line[31:38])
+                y_coord.append(line[39:46])
+                z_coord.append(line[47:54])
 
+    except Exception as error:
+        print("An error occurred")
+        #print(error)
 
+    start_index = 0
+    index = 1
 
-def main(x):
+    x1 = float(x_coord[start_index])
+    x2 = float(x_coord[index])
+    y1 = float(y_coord[start_index])
+    y2 = float(y_coord[index])
+    z1 = float(z_coord[start_index])
+    z2 = float(z_coord[index])
 
-    #with open(sys.argv[1], "r") as file:
-        #contents = file.read()
-                                                             
-        #while contents:
-            #frequency = atom_info(count)
-            #print("Welcome to the pdb program. \nTo begin, try typing 'help' for the list of valid commands.")
-            #print(frequency, "atoms recorded.")  
+    x_value = (x2 - x1)**2   #calculates the distance between the first pair of x values in the first two coordinates
+    x_values.append(x_value)
+        #print(x_values)
+        #x_values[x_value]
 
-    if x == "help":
-        help()
-    elif x == "atomFreq":
-        atomFreq()
-    elif x == "resFreq":
-        resFreq()
-    elif len(x.split()) == 4:
-        y = x.split()
-        u = ['resLength']
-        if y[0] in u and y[2] in chain_ID:
-            if y[1].isupper() and y[2].isupper() is True:
-                if y[1] in residue:
-                    if y[3] in res_seq_num and int(y[3]):
-                        try:
-                            for line in atom_records:
-                                if line[17:20] == y[1] and line[21] == y[2] and line[23:26] == y[3]:
-                                    #print("workssss")
-                                    resLength(y[1], y[2], y[3])
+    y_value = (y2 - y1)**2   #calculates the distance between the first pair of y values in the first two coordinates 
+    y_values.append(y_value)
+        #print(y_values)
 
-                                elif not line[17:20] == y[1] and line[21] == y[2] and line[23:26] == y[3]:
-                                    print("No residue present")
-                                    break
-                        except:
-                            #if not line[17:20] == y[1] and line[21] == y[2] and line[23:26] == y[3]:
-                            print("An error occurred")
+    z_value = (z2 - z1)**2   #calculates the distance between the first pair of z values in the first two coordinates
+    z_values.append(z_value)
+        #print(z_values)
 
+    first_pair_dist = math.sqrt(x_value + y_value + z_value)
+    coordinate_dist.append(first_pair_dist)
+        #print(coordinate_dist)
+
+    while index < len(x_coord):
+        start_index += 1
+        index += 1
+        x1 = float(x_coord[start_index])
+        x2 = float(x_coord[index])
+
+        y1 = float(y_coord[start_index])
+        y2 = float(y_coord[index])
+
+        z1 = float(z_coord[start_index])
+        z2 = float(z_coord[index])
+
+        x_coords = (x2 - x1)**2         #calculates the distance between each pair of x values of the other coordinates
+        x_values.append(x_coords)
+            #print(x_values)
+
+        y_coords = (y2 - y1)**2         #calculates the distance between each pair of y values of the other coordinates 
+        y_values.append(y_coords)
+            #print(y_values)        
+
+        z_coords = (z2 - z1)**2         #calculates the distance between each pair of z values of the other coordinates
+        z_values.append(z_coords)
+        print(z_values)
+
+    while index < len(x_values):
+        index += 1
+        start_index += 1
+
+        pair1 = x_values[start_index]
+        pair2 = y_values[start_index]
+        pair3 = z_values[start_index]
+
+        other_pairs_dist = math.sqrt(pair1 + pair2 + pair3)
+        coordinate_dist.append(other_pairs_dist)
+
+        print(coordinate_dist)
+        
+def main():
+
+    try:
+        with open(sys.argv[1], "r") as file:
+            contents = file.read()
+
+            frequency = atom_info(count)
+            print("Welcome to the pdb program. \nTo begin, try typing 'help' for the list of valid commands or typing quit to exit the program")
+            print(frequency, "atoms recorded.")
+
+            while contents:
+                x = input("Enter a command: ")
+
+                if x == "help":
+                    help()
+                elif x == "atomFreq":
+                    atomFreq()
+                elif x == "resFreq":
+                    resFreq()
+                elif len(x.split()) == 4:
+                    y = x.split()
+                    u = ['resLength']
+                    if y[0] in u and y[2] in chain_ID:
+                        if y[1].isupper() and y[2].isupper() is True:
+                            if y[1] in residue:
+                                if y[3] in res_seq_num and int(y[3]):
+                                    try:
+                                        for line in atom_records:
+                                            if line[17:20] == y[1] and line[21] == y[2] and line[23:26] == y[3]:
+                                                resLength(y[1], y[2], y[3])
+
+                                            elif not line[17:20] == y[1] and line[21] == y[2] and line[23:26] == y[3]:
+                                                print("No residue present")
+                                                break
+                                    except Exception as error:
+                                        print("An error occurred")
+                                        print(error)
+
+                                else:
+                                    print("Usage: reslength <res_name> <chain_id> <res_seq_num>")
+                                    print("For details about the reslength command, use the 'help' command.")
+
+                            else:
+                                #print("Residue entered is not found in the file")
+                                print("Usage: reslength <res_name> <chain_id> <res_seq_num>")
+                                print("For details about the reslength command, use the 'help' command.")
+                        else:
+                            print("Usage: reslength <res_name> <chain_id> <res_seq_num>")
+                            print("For details about the reslength command, use the 'help' command.")
                     else:
-                        #print("Enter the correct command with its required arguments")
-                        print("annoying")
-                #else:
-                    #print("Enter the correct command with its required argument")
+                        print("Usage: reslength <res_name> <chain_id> <res_seq_num>")
+                        print("For details about the reslength command, use the 'help' command.")
+
+                elif x == "quit":
+                    print("Leaving the program. Thank you for using the pdb tool.")
+                    file.close()
+                    exit()
+
                 else:
-                    print("No residue present")
-            else:
-                print("Enter the correct command with its required arguments")
-                print("Usage: reslength <res_name> <chain_id> <res_seq_num>")
-                print("For details about the reslength command, use the 'help' command.")
-                                                                                                                                                                      192,1         76%
-        else:
-        #print("Enter the correct command with its required arguments")
-            print("Doesn't work")
-
-    elif x == "quit":
-        print("Leaving the program. Thank you for using the pdb tool.")
-        #file.close()
-        exit()
-
-    else:
-        print("Invalid Command or missing arguments/wrong number of arguments entered to the command")
+                    print("Invalid Command or missing arguments/wrong number of arguments entered to the command.")
+                    print("Type 'help' for more details about valid commands.")
 
 
-frequency = atom_info(count)
-print("Welcome to the pdb program. \nTo begin, try typing 'help' for the list of valid commands or typing quit to exit the program")
-print(frequency, "atoms recorded.")
+    except FileNotFoundError:
+        print("File does not exist")
+        sys.exit()
 
-with open(sys.argv[1], "r") as file:
-    contents = file.read()
+    except PermissionError:
+        print("No access to file. Enable read permissions")
+        sys.exit()
 
-    while contents:
-       # frequency = atom_info(count)
-       # print("Welcome to the pdb program. \nTo begin, try typing 'help' for the list of valid commands or typing quit to exit the program")
-       # print(frequency, "atoms recorded.")
-
-        x = input("Enter a command: ")
-        main(x)
-
-        #if x == "quit":
-         #   print("Leaving the program. Thank you for using the pdb tool.")
-         #   break
-
-file.close()
-
+    except IndexError:
+        print("A valid file isn't entered")
+        print("Usage: <pdbTool.py> <valid pdb file name>")
+        sys.exit()
+                                                                                                                                   
 if __name__ == "__main__":
-    main(x)
+    main()
 
 
 
+                                                                                                                                    
 
-
-
-
-
-
-
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
             
             
             
